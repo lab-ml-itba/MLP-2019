@@ -139,7 +139,27 @@ def draw_neural_net(ax, left, right, bottom, top, layer_sizes, coefs_, intercept
     for m in range(layer_sizes[-1]):
         plt.arrow(right+0.015, layer_top_0 - m*v_spacing, 0.16*h_spacing, 0,  lw =1, head_width=0.01, head_length=0.02)
         
-        
+def get_dataset(random_seed=42, N=200):
+    N = N//4
+    np.random.seed(random_seed)
+    X1 = np.random.multivariate_normal(np.array([0, 0]), [[1,0],[0,1]], 2*N)
+    X2 = np.random.multivariate_normal(np.array([0, 6]), [[6,0],[0,1]], N)
+    X3 = np.random.multivariate_normal(np.array([6, 0]), [[1,0],[0,6]], N)
+    X = np.vstack([X1, X2, X3])
+    y = np.vstack([np.ones((2*N, 1)), np.zeros((2*N, 1))]).reshape(-1)
+    return X, y
+
+def get_dataset_2(random_seed=42, N=200):
+    N = N//4
+    np.random.seed(random_seed)
+    X1 = np.random.multivariate_normal(np.array([0, 0]), [[1,0],[0,1]], 2*N)
+    X2 = np.random.multivariate_normal(np.array([0, 6]), [[6,0],[0,1]], N)
+    X3 = np.random.multivariate_normal(np.array([6, 0]), [[1,0],[0,6]], N)
+    X4 = np.random.multivariate_normal(np.array([-6, 0]), [[1,0],[0,6]], N)
+    X5 = np.random.multivariate_normal(np.array([0, -6]), [[6,0],[0,1]], N)
+    X = np.vstack([X1, X2, X3, X4, X5])
+    y = np.vstack([np.ones((2*N, 1)), np.zeros((4*N, 1))]).reshape(-1)
+    return X, y
 
 def generate_gaussians_distributions(sep=1, N=500, random_state=42, normalize=True):
     np.random.seed(random_state)
@@ -157,6 +177,53 @@ def generate_gaussians_distributions(sep=1, N=500, random_state=42, normalize=Tr
         X[:, 0] = X[:, 0]
         X[:, 1] = X[:, 1]
     return X[indexes], y[indexes]
+
+def plot_boundaries_keras(X_train, y_train, score, probability_func, degree=None, bias=False, h = .02, ax = None, margin=0.5):
+    X = X_train
+    x_min, x_max = X[:, 0].min() - margin, X[:, 0].max() + margin
+    y_min, y_max = X[:, 1].min() - margin, X[:, 1].max() + margin
+    xx, yy = np.meshgrid(np.arange(x_min, x_max, h),
+                         np.arange(y_min, y_max, h))
+
+    if ax is None:
+        ax = plt.subplot(1, 1, 1)
+    
+    # Plot the decision boundary. For that, we will assign a color to each
+    # point in the mesh [x_min, x_max]x[y_min, y_max].
+    
+    if degree is not None:
+        polynomial_set = get_polynimial_set(np.c_[xx.ravel(), yy.ravel()], degree = degree, bias=bias)
+        Zaux = probability_func(polynomial_set)
+    else:
+        Zaux = probability_func(np.c_[xx.ravel(), yy.ravel()])
+        # Z = Z_aux[:, 1]
+    
+    if Zaux.shape[1] == 2:
+        Z = Zaux[:, 1]
+    else:
+        Z = Zaux[:, 0]
+
+    # Put the result into a color plot
+    Z = Z.reshape(xx.shape)
+    
+    cm = plt.cm.RdBu
+    cm_bright = ListedColormap(['#FF0000', '#0000FF'])
+    
+    cf = ax.contourf(xx, yy, Z, 50, cmap=cm, alpha=.8)
+    plt.colorbar(cf, ax=ax)
+    #plt.colorbar(Z,ax=ax)
+
+    # Plot also the training points
+    ax.scatter(X_train[:, 0], X_train[:, 1], c=y_train, cmap=cm_bright,
+               edgecolors='k', s=100)
+
+    ax.set_xlim(xx.min(), xx.max())
+    ax.set_ylim(yy.min(), yy.max())
+    ax.set_xticks(())
+    ax.set_yticks(())
+    if score is not None:
+        ax.text(xx.max() - .3, yy.min() + .3, ('%.2f' % score).lstrip('0'),
+                size=40, horizontalalignment='right')
 
 def plot_boundaries(X_train, y_train, score=None, probability_func=None, degree = None, n_colors = 100, mesh_res = 1000, ax = None):
     X = X_train #np.vstack((X_test, X_train))
