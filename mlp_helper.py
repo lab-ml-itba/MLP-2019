@@ -24,7 +24,7 @@ def return_weights_notation(shape):
         biases.append(bias)
     return weights, biases
 
-def draw_neural_net(ax, left, right, bottom, top, layer_sizes, coefs_, intercepts_):
+def draw_neural_net(ax, left, right, bottom, top, layer_sizes, coefs_, intercepts_, line_width=0.5):
     '''
     Draw a neural network cartoon using matplotilb.
     
@@ -86,7 +86,7 @@ def draw_neural_net(ax, left, right, bottom, top, layer_sizes, coefs_, intercept
         for m in range(layer_size_a):
             for o in range(layer_size_b):
                 line = plt.Line2D([n*h_spacing + left, (n + 1)*h_spacing + left],
-                                  [layer_top_a - m*v_spacing, layer_top_b - o*v_spacing], c='k', lw=0.1)
+                                  [layer_top_a - m*v_spacing, layer_top_b - o*v_spacing], c='k', lw=line_width)
                 ax.add_artist(line)
                 xm = (n*h_spacing + left)
                 xo = ((n + 1)*h_spacing + left)
@@ -111,6 +111,7 @@ def draw_neural_net(ax, left, right, bottom, top, layer_sizes, coefs_, intercept
                          rotation = rot_mo_deg, \
                          fontsize = 12)
     # Edges between bias and nodes
+    
     for n, (layer_size_a, layer_size_b) in enumerate(zip(layer_sizes[:-1], layer_sizes[1:])):
         if n < n_layers-1:
             layer_top_a = v_spacing*(layer_size_a - 1)/2. + (top + bottom)/2.
@@ -119,7 +120,7 @@ def draw_neural_net(ax, left, right, bottom, top, layer_sizes, coefs_, intercept
         y_bias = top + 0.005 
         for o in range(layer_size_b):
             line = plt.Line2D([x_bias, (n + 1)*h_spacing + left],
-                          [y_bias, layer_top_b - o*v_spacing], c='k', lw=0.1)
+                          [y_bias, layer_top_b - o*v_spacing], c='k', lw=line_width)
             ax.add_artist(line)
             xo = ((n + 1)*h_spacing + left)
             yo = (layer_top_b - o*v_spacing)
