@@ -210,7 +210,8 @@ def plot_boundaries_keras(X_train, y_train, score, probability_func, degree=None
     cm = plt.cm.RdBu
     cm_bright = ListedColormap(['#FF0000', '#0000FF'])
     
-    cf = ax.contourf(xx, yy, Z, 50, cmap=cm, alpha=.8)
+    cf = ax.contourf(xx, yy, Z, 50, cmap=cm, alpha=.8, vmin=0.0, vmax=1.0)
+    # cf = ax.contourf(xx, yy, Z, 50, cmap=cm, alpha=.8)
     plt.colorbar(cf, ax=ax)
     #plt.colorbar(Z,ax=ax)
 
