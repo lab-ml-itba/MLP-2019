@@ -32,8 +32,8 @@ class PlotLosses(keras.callbacks.Callback):
             self.x.append(self.i)
             self.losses.append(logs.get('loss'))
             self.val_losses.append(logs.get('val_loss'))
-            self.acc.append(logs.get('acc'))
-            self.val_acc.append(logs.get('val_acc'))
+            self.acc.append(logs.get('accuracy'))
+            self.val_acc.append(logs.get('val_accuracy'))
             self.i += 1
         
         if (epoch%self.plot_interval==0):
@@ -43,8 +43,8 @@ class PlotLosses(keras.callbacks.Callback):
             ax1.plot(self.x, self.val_losses, label="val_loss")
             ax1.legend()
 
-            ax2.plot(self.x, self.acc, label="acc")
-            ax2.plot(self.x, self.val_acc, label="val_acc")
+            ax2.plot(self.x, self.acc, label="accuracy")
+            ax2.plot(self.x, self.val_acc, label="val_accuracy")
             ax2.legend()
             plt.show();
         #score = self.model.evaluate(x_test, y_test_categorical, verbose=0)
@@ -58,7 +58,7 @@ class PlotLosses(keras.callbacks.Callback):
                 self.logs.append(logs)
                 self.x.append(self.i)
                 self.losses.append(logs.get('loss'))
-                self.acc.append(logs.get('acc'))
+                self.acc.append(logs.get('accuracy'))
                 if self.x_val is not None:
                     indexes = np.random.permutation(range(self.x_val.shape[0]))
                     score = self.model.evaluate(self.x_val[indexes][:self.val_samples], 
