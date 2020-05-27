@@ -1,3 +1,4 @@
+logs/
 *.hdf5
 dataset/
 __pycache__/
