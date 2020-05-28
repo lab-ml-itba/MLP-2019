@@ -179,7 +179,7 @@ def generate_gaussians_distributions(sep=1, N=500, random_state=42, normalize=Tr
         X[:, 1] = X[:, 1]
     return X[indexes], y[indexes]
 
-def plot_boundaries_keras(X_train, y_train, score, probability_func, degree=None, bias=False, h = .02, ax = None, margin=0.5):
+def plot_boundaries_keras(X_train, y_train, score, probability_func, degree=None, bias=False, h = .02, ax = None, margin=0.5, plot_points=True):
     X = X_train
     x_min, x_max = X[:, 0].min() - margin, X[:, 0].max() + margin
     y_min, y_max = X[:, 1].min() - margin, X[:, 1].max() + margin
@@ -215,9 +215,10 @@ def plot_boundaries_keras(X_train, y_train, score, probability_func, degree=None
     plt.colorbar(cf, ax=ax)
     #plt.colorbar(Z,ax=ax)
 
-    # Plot also the training points
-    ax.scatter(X_train[:, 0], X_train[:, 1], c=y_train, cmap=cm_bright,
-               edgecolors='k', s=100)
+    if plot_points:
+        # Plot also the training points
+        ax.scatter(X_train[:, 0], X_train[:, 1], c=y_train, cmap=cm_bright,
+                   edgecolors='k', s=100)
 
     ax.set_xlim(xx.min(), xx.max())
     ax.set_ylim(yy.min(), yy.max())
