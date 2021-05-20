@@ -1,9 +1,9 @@
-import keras
+import tensorflow.keras
 import matplotlib.pyplot as plt
 from IPython.display import clear_output
 import numpy as np
 
-class PlotLosses(keras.callbacks.Callback):
+class PlotLosses(tensorflow.keras.callbacks.Callback):
     def __init__(self, plot_interval=1, 
                  evaluate_interval=10, 
                  val_samples = 512, 
