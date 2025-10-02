@@ -179,10 +179,13 @@ def generate_gaussians_distributions(sep=1, N=500, random_state=42, normalize=Tr
         X[:, 1] = X[:, 1]
     return X[indexes], y[indexes]
 
-def plot_boundaries_keras(X_train, y_train, score, probability_func, degree=None, bias=False, h = .02, ax = None, margin=0.5, plot_points=True):
+def plot_boundaries_keras(
+    X_train, y_train, score, probability_func, degree=None, bias=False, h = .02, ax = None, margin=0.5, plot_points=True,
+    x_min=None, x_max=None, y_min=None, y_max=None
+):
     X = X_train
-    x_min, x_max = X[:, 0].min() - margin, X[:, 0].max() + margin
-    y_min, y_max = X[:, 1].min() - margin, X[:, 1].max() + margin
+    # x_min, x_max = X[:, 0].min() - margin, X[:, 0].max() + margin
+    # y_min, y_max = X[:, 1].min() - margin, X[:, 1].max() + margin
     xx, yy = np.meshgrid(np.arange(x_min, x_max, h),
                          np.arange(y_min, y_max, h))
 
