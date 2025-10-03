@@ -184,8 +184,8 @@ def plot_boundaries_keras(
     x_min=None, x_max=None, y_min=None, y_max=None
 ):
     X = X_train
-    # x_min, x_max = X[:, 0].min() - margin, X[:, 0].max() + margin
-    # y_min, y_max = X[:, 1].min() - margin, X[:, 1].max() + margin
+    x_min, x_max = X[:, 0].min() - margin, X[:, 0].max() + margin
+    y_min, y_max = X[:, 1].min() - margin, X[:, 1].max() + margin
     xx, yy = np.meshgrid(np.arange(x_min, x_max, h),
                          np.arange(y_min, y_max, h))
 
